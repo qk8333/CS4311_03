@@ -9,6 +9,7 @@ package rullo;
 import collections.CollectionChecker;
 import collections.SumChecker;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import togglegrid.ToggleGrid;
 
@@ -65,6 +66,22 @@ public class Rullo {
                     this.rowKey.get(index)));
             this.checkers.add(new SumChecker(this.grid.columnIterator(index), 
                     this.columnKey.get(index)));
+        }
+    }
+    
+    /**
+     * Function to toggle the value in a cell on the grid
+     * @param row   row number to toggle in grid
+     * @param column    column number to toggle in grid
+     * @exception NoSuchElementException    one or more parameters out of bounds
+     */
+    public void setCell(int row, int column) {
+        if (row < 0 || row >= this.rowKey.size() ||
+            column < 0 || column >= this.columnKey.size()) {
+            throw new NoSuchElementException();
+        }
+        else {
+            this.grid.toggle(row, column);
         }
     }
     
