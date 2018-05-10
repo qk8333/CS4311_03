@@ -7,10 +7,10 @@
 package togglegrid;
 
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 /**
  * A 2-dimensional array of cells that can be toggled through a sequence of
@@ -52,14 +52,15 @@ public class ToggleGrid {
      */
     public static ToggleGrid makeRandomGrid(int rows, int columns, int min,
             int max, int numberValues, boolean hasZero) {
+        Random random = new Random(System.currentTimeMillis());
         ArrayList<ArrayList<ToggleCell>> temp = new ArrayList<>();
-        List<Integer> values = new ArrayList<>();
+        List<Integer> values;
         for (int row = 0; row < rows; row++) {
             temp.add(new ArrayList<>());
             for (int column = 0; column < columns; column++) {
-                values.clear();
+                values = new ArrayList<>();
                 for (int value = 0; value < numberValues; value++) {
-                    values.add(ThreadLocalRandom.current().nextInt(min, max + 1));
+                    values.add(random.nextInt(max - min + 1) + min);
                 }
                 if (hasZero) values.add(0); else{};
                 temp.get(row).add(new ToggleCell(values));
@@ -99,7 +100,10 @@ public class ToggleGrid {
      * @param column    the column of the cell
      */
     public void toggle(int row, int column) {
-        this.grid.get(row).get(column).toggle();
+        if (row >= 0 && row < this.grid.size() && column >= 0 && 
+            column < this.grid.get(0).size()) {
+            this.grid.get(row).get(column).toggle();
+        }
     }
     
     /**
@@ -185,13 +189,11 @@ public class ToggleGrid {
         /**
          * Iterate through row (first call starts at the first value)
          * @return  ToggleCell object
-         * @exception NoSuchElementException    iterator out of bounds
          */
         @Override
         public ToggleCell next() {
-            this.index++;
-            if (!this.hasNext()) throw new NoSuchElementException();
-            else return ToggleGrid.this.grid.get(this.row).get(this.index-1);
+            if (this.hasNext()) this.index++; else{};
+            return ToggleGrid.this.grid.get(this.row).get(this.index-1);
         }
         
         /**
@@ -228,15 +230,11 @@ public class ToggleGrid {
         /**
          * Iterate through column (first call starts at the first value)
          * @return  ToggleCell object
-         * @exception NoSuchElementException    iterator out of bounds
          */
         @Override
         public ToggleCell next() {
-            this.index++;
-            if (!this.hasNext()) throw new NoSuchElementException();
-            else {
-                return ToggleGrid.this.grid.get(this.index-1).get(this.column);
-            }
+            if (this.hasNext()) this.index++; else{};
+            return ToggleGrid.this.grid.get(this.index-1).get(this.column);
         }
         
         /**
@@ -289,7 +287,6 @@ public class ToggleGrid {
         /**
          * Iterate through the area
          * @return  ToggleCell object
-         * @exception NoSuchElementException    iterator out of bounds
          */
         @Override
         public ToggleCell next() {
@@ -299,8 +296,8 @@ public class ToggleGrid {
                         .get(this.rowIndex).get(this.columnIndex);
             }
             else {
-                if (!this.hasNext()) throw new NoSuchElementException(); else{};
-                this.columnIndex++;
+                if (!this.hasNext()) this.columnIndex++; else{};
+                
                 if (this.columnIndex >= this.numberColumns) {
                     this.rowIndex++;
                     this.columnIndex -= this.numberColumns;
