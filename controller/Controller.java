@@ -33,6 +33,7 @@ public class Controller {
         this.data = new CompletedData();
         this.menu = new RulloMenu(this);
         this.grid = new GameGrid(this);
+        this.stage.setTitle("Rullo");
     }
     
     /**
