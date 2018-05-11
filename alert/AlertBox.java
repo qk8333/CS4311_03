@@ -10,7 +10,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -34,14 +38,19 @@ public class AlertBox {
        
        Label label = new Label();
        label.setText(message);
+       label.setFont(new Font(14));
        Button button = new Button("Close");
+       button.setPrefSize(100, 30);
        button.setOnAction(lambda -> window.close());
        
-       VBox layout = new VBox(10);
+       VBox layout = new VBox(20);
        layout.getChildren().addAll(label, button);
        layout.setAlignment(Pos.CENTER);
        
-       Scene scene = new Scene(layout);
+       StackPane stack = new StackPane();
+       stack.getChildren().addAll(new Rectangle(350, 100, Color.LIGHTGREY), layout);
+       
+       Scene scene = new Scene(stack);
        window.setScene(scene);
        window.showAndWait();
     }
