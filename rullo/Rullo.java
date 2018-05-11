@@ -58,10 +58,10 @@ public class Rullo {
             this.rowKey.add(row);
             this.columnKey.add(column);
         }
-        // Reset grid to default state
+        // Reset grid to all zeros
         for (int row = 0; row < size; row++) {
             for (int column = 0; column < size; column++) {
-                if (this.grid.value(row, column) == 0) {
+                if (this.grid.value(row, column) != 0) {
                     this.grid.toggle(row, column);
                 } else{};
             }
