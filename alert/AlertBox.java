@@ -11,9 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -35,22 +32,22 @@ public class AlertBox {
        window.initModality(Modality.APPLICATION_MODAL);
        window.setTitle(title);
        window.setWidth(250);
+       window.setHeight(140);
        
        Label label = new Label();
+       label.setFont(new Font("Bodoni", 15));
        label.setText(message);
-       label.setFont(new Font(14));
        Button button = new Button("Close");
-       button.setPrefSize(100, 30);
        button.setOnAction(lambda -> window.close());
        
-       VBox layout = new VBox(20);
-       layout.getChildren().addAll(label, button);
-       layout.setAlignment(Pos.CENTER);
        
-       StackPane stack = new StackPane();
-       stack.getChildren().addAll(new Rectangle(350, 100, Color.LIGHTGREY), layout);
+       StackPane layout = new StackPane(label, button);
+       layout.setStyle("-fx-background-color: #D3D3D3");
+       StackPane.setAlignment(label, Pos.CENTER);
+       StackPane.setAlignment(button, Pos.BOTTOM_CENTER);
        
-       Scene scene = new Scene(stack);
+       
+       Scene scene = new Scene(layout);
        window.setScene(scene);
        window.showAndWait();
     }
